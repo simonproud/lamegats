@@ -1,0 +1,94 @@
+<?php
+
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
+
+class CreateLamegatsVatsTables extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        $tableNames = config('vats.table_names');
+
+        if (empty($tableNames)) {
+            throw new \Exception('Error: config/vats.php not loaded. Run [php artisan config:clear] and try again.');
+        }
+
+        Schema::create($tableNames['vats_systems'], function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->string('name', 125);       // For MySQL 8.0 use string('name', 125);
+            $table->string('token');
+            $table->string('base_uri');
+            $table->string('driver');
+            $table->timestamps();
+
+            $table->unique(['name', 'token', 'driver']);
+        });
+
+        Schema::create($tableNames['accounts'], function (Blueprint $table) use ($tableNames) {
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('vats_systems_id');
+            $table->string('identifier');
+            $table->timestamps();
+
+            $table->unique(['vats_systems_id', 'identifier']);
+            $table->foreign('vats_systems_id')
+                            ->references('id')
+                            ->on($tableNames['vats_systems'])
+                            ->onDelete('cascade');
+        });
+
+        Schema::create($tableNames['events'], function (Blueprint $table) use ($tableNames) {
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('vats_systems_id');
+
+            $table->string('call_id');
+            $table->string('direction');
+            $table->string('type');
+            $table->foreign('vats_systems_id')
+                        ->references('id')
+                        ->on($tableNames['vats_systems'])
+                        ->onDelete('cascade');
+
+        });
+
+        Schema::create($tableNames['calls'], function (Blueprint $table) use ($tableNames) {
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('vats_systems_id');
+            $table->string('direction');
+            $table->string('type');
+            $table->string('call_id');
+            $table->foreign('vats_systems_id')
+                           ->references('id')
+                           ->on($tableNames['vats_systems'])
+                           ->onDelete('cascade');
+        });
+
+
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        $tableNames = config('permission.table_names');
+
+        if (empty($tableNames)) {
+            throw new \Exception('Error: config/permission.php not found and defaults could not be merged. Please publish the package configuration before proceeding, or drop the tables manually.');
+        }
+
+        Schema::drop($tableNames['role_has_permissions']);
+        Schema::drop($tableNames['model_has_roles']);
+        Schema::drop($tableNames['model_has_permissions']);
+        Schema::drop($tableNames['roles']);
+        Schema::drop($tableNames['permissions']);
+    }
+}
