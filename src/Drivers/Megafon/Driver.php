@@ -83,7 +83,7 @@ class Driver extends \SimonProud\Lamegats\Drivers\Driver implements ITokenized
 
         $this->client = new Client($config);
         $this->setCrmToAts(new CrmToAts($this->client, $config));
-        $this->setAtsToCrm(new CrmToAts($this->client, $config));
+        $this->setAtsToCrm(new AtsToCrm($this->client, $config));
         }
     }
 
@@ -94,8 +94,8 @@ class Driver extends \SimonProud\Lamegats\Drivers\Driver implements ITokenized
      */
     public static function _vatsFindToken(\Illuminate\Http\Request $request):?string
     {
-        if(isset($request->token)){
-            return $request->token;
+        if(isset($request->crm_token)){
+            return $request->crm_token;
         }
         return null;
     }

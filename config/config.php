@@ -6,6 +6,7 @@ return [
     |--------------------------------------------------------------------------
     */
     'timeout' => 2.0,
+    'entrypoint' => '/api/ats/entrypoint',
     'drivers' => [
         'megafon' => SimonProud\Lamegats\Drivers\Megafon\Driver::class
     ],
