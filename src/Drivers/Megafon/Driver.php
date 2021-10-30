@@ -58,7 +58,7 @@ class Driver extends \SimonProud\Lamegats\Drivers\Driver implements ITokenized
     {
 
         parent::__construct($config);
-        if($config['clean'] != true){
+        if(isset($config['clean']) && $config['clean'] != true){
         // Если есть в конфиге, берем оттуда, если нету, читаем из конфига
         $baseURI = $config['base_uri'];
 
