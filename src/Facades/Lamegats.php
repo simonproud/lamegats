@@ -15,7 +15,7 @@ class Lamegats
 
         $driver = $vats->driver;
         if(class_exists($driver)){
-        $this->availableFunctions = collect(explode(',',implode(',',get_class_methods(get_class($driver))).','))->filter(function($item){
+        $this->availableFunctions = collect(explode(',',implode(',',get_class_methods($driver)).','))->filter(function($item){
             if(!$item) {return false;}
             if(str_contains($item, '__')) {return false;}
             if(str_contains($item, '_vats')) {return false;}
