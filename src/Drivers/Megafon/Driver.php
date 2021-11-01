@@ -63,14 +63,14 @@ class Driver extends \SimonProud\Lamegats\Drivers\Driver implements ITokenized
         $baseURI = $config['base_uri'];
 
         if (!$baseURI) {
-            throw new URIExcectedException('Token expected.');
+            throw new URIExcectedException('Base uri expected.');
         }
 
         // Если нету токена, выбрасываем исключение.
         if (!(isset($config['token']))){
             throw new TokenExpectedException('Token expected.');
         }
-        // Делаем массив доступных методов и выпиливаем методы начинающиеся на __
+        // Делаем массив доступных методов и выпиливаем методы начинающиеся на __, _vats
         $this->availableFunctions = collect(explode(',',implode(',',get_class_methods(CrmToAts::class)).','))->filter(function($item){
             if(!$item) {return false;}
             if(str_contains($item, '__')) {return false;}
@@ -83,7 +83,7 @@ class Driver extends \SimonProud\Lamegats\Drivers\Driver implements ITokenized
 
         $this->client = new Client($config);
         $this->setCrmToAts(new CrmToAts($this->client, $config));
-        $this->setAtsToCrm(new AtsToCrm($this->client, $config));
+        $this->setAtsToCrm(new AtsToCrm($this, $config));
         }
     }
 
@@ -203,7 +203,7 @@ class Driver extends \SimonProud\Lamegats\Drivers\Driver implements ITokenized
     }
 
     /**
-     * @param mixed $crmToAts
+     * @param mixed $atsToCrm
      */
     public function setAtsToCrm(IToCrm $atsToCrm)
     {
