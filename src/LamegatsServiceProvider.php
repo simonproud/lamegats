@@ -3,6 +3,7 @@
 namespace SimonProud\Lamegats;
 
 use Illuminate\Support\ServiceProvider;
+use SimonProud\Lamegats\Facades\Lamegats;
 
 class LamegatsServiceProvider extends ServiceProvider
 {
@@ -42,7 +43,9 @@ class LamegatsServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(__DIR__.'/../config/config.php', 'vats');
 
         $this->app->make('SimonProud\Lamegats\Controllers\ATSController');
-
+        $this->app->bind('lamegats', function($app) {
+            return new Lamegats();
+        });
 
     }
 }

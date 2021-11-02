@@ -27,7 +27,10 @@
         "laravel": {
             "providers": [
                 "SimonProud\\Lamegats\\LamegatsServiceProvider"
-            ]
+            ],
+            "aliases": {
+                "Lamegats": "SimonProud\\Lamegats\\Facades\\Lamegats"
+            }
         }
     },
     "autoload": {
