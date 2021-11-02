@@ -49,9 +49,11 @@ class CreateLamegatsVatsTables extends Migration
             $table->unsignedBigInteger('vats_systems_id');
 
             $table->string('call_id');
-            $table->string('direction');
             $table->string('type');
-
+            $table->string('account_id');
+            $table->string('client_type');
+            $table->string('client_id');
+            $table->string('full_request');
             $table->timestamps();
             $table->foreign('vats_systems_id')
                         ->references('id')
@@ -85,16 +87,15 @@ class CreateLamegatsVatsTables extends Migration
      */
     public function down()
     {
-        $tableNames = config('permission.table_names');
+        $tableNames = config('vats.table_names');
 
         if (empty($tableNames)) {
             throw new \Exception('Error: config/permission.php not found and defaults could not be merged. Please publish the package configuration before proceeding, or drop the tables manually.');
         }
 
-        Schema::drop($tableNames['role_has_permissions']);
-        Schema::drop($tableNames['model_has_roles']);
-        Schema::drop($tableNames['model_has_permissions']);
-        Schema::drop($tableNames['roles']);
-        Schema::drop($tableNames['permissions']);
+        Schema::drop($tableNames['vats_systems']);
+        Schema::drop($tableNames['accounts']);
+        Schema::drop($tableNames['events']);
+        Schema::drop($tableNames['calls']);
     }
 }

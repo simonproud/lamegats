@@ -4,6 +4,7 @@ namespace SimonProud\Lamegats\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use SimonProud\Lamegats\Facades\Lamegats;
 
 /**
  * @property string $driver
@@ -18,5 +19,11 @@ class Account extends Model
     public function getTable()
     {
         return config('vats.table_names.accounts', parent::getTable());
+    }
+
+    public static function reload(VatsSystem $vatsSystem){
+        $lamegate = Lamegats::make($vatsSystem);
+        $accounts = $lamegate->getToAts()->accounts(['token' => $vatsSystem->auth_token]);
+
     }
 }

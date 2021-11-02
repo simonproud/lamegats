@@ -10,6 +10,12 @@ return [
     'drivers' => [
         'megafon' => SimonProud\Lamegats\Drivers\Megafon\Driver::class
     ],
+    'clients' => [
+        //Client classes User::class => 'phone field'
+        \App\Models\User::class => 'phone@+',
+        \Modules\Lead\Entities\Lead::class => 'contact@+'
+    ],
+    'create_if_clients_not_exists' => \Modules\Lead\Entities\Lead::class.'@contact@+',
     'find_token' => [
         SimonProud\Lamegats\Drivers\Megafon\Driver::class.'@_vatsFindToken',
     ],

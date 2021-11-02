@@ -3,12 +3,15 @@
 namespace SimonProud\Lamegats\Drivers\Megafon\Services;
 
 
+use Exception;
+use http\Client\Curl\User;
 use Illuminate\Http\Request;
 use SimonProud\Lamegats\Drivers\Megafon\Contracts\IAtsToCrm;
 use SimonProud\Lamegats\Interfaces\IDriver;
 use SimonProud\Lamegats\Interfaces\IToCrm;
 use SimonProud\Lamegats\Models\Event;
 use SimonProud\Lamegats\Models\VatsSystem;
+use Illuminate\Database\Eloquent\Model;
 
 class AtsToCrm implements IAtsToCrm, IToCrm
 {
@@ -33,14 +36,37 @@ class AtsToCrm implements IAtsToCrm, IToCrm
     /**
      * @param $body
      * @return mixed
+     * @throws Exception
      */
     public function event($body)
     {
+        $client = null;
+        foreach (config('vats.clients') as $class => $row){
+            [$field, $modifier] = explode('@', $row);
+            if(new $class instanceof Model){
+                $client = $class::where($field, '=', $modifier.$body['phone'])->first();
+                if($client instanceof $class){
+                    break;
+                }
+            }
+            else{
+                throw new Exception('Wrong instance '.$class);
+            }
+        }
+        if($client === null){
+
+            [$clientClass, $field, $modifier] = explode('@', config('vats.create_if_clients_not_exists'));
+            if($clientClass instanceof Model){
+                $client = $clientClass::create([$field => $modifier.$body['phone'], 'source' => 'vats']);
+            }
+        }
         $data = [
+            'client_type' => get_class($client),
+            'client_id' => $client->id,
             'vats_systems_id' => $this->vatsSystem->id,
-            'call_id' => $body['callId']
+            'call_id' => $body['callId'],
         ];
-        Event::create();
+        return Event::create($data);
     }
 
     /**
