@@ -23,7 +23,14 @@ class Account extends Model
 
     public static function reload(VatsSystem $vatsSystem){
         $lamegate = Lamegats::make($vatsSystem);
-        $accounts = $lamegate->getToAts()->accounts(['token' => $vatsSystem->auth_token]);
-        dd($accounts);
+        $accounts = json_decode($lamegate->getToAts()->accounts(['token' => $vatsSystem->auth_token])->getBody(), true);
+
+        foreach ($accounts as $account){
+            Account::updateOrCreate([
+                'vats_systems_id' => $vatsSystem->id,
+                'identifier' => $account['name']
+            ]);
+        }
+
     }
 }
