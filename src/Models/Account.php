@@ -24,6 +24,6 @@ class Account extends Model
     public static function reload(VatsSystem $vatsSystem){
         $lamegate = Lamegats::make($vatsSystem);
         $accounts = $lamegate->getToAts()->accounts(['token' => $vatsSystem->auth_token]);
-
+        dd($accounts);
     }
 }
