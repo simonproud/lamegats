@@ -24,7 +24,6 @@ class CreateLamegatsVatsTables extends Migration
             $table->string('name', 125);       // For MySQL 8.0 use string('name', 125);
             $table->string('auth_token');
             $table->string('token');
-            $table->string('auth');
             $table->string('base_uri');
             $table->string('driver');
             $table->timestamps();
