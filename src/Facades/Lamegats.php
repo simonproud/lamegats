@@ -20,7 +20,7 @@ class Lamegats
         $lamegats->setVats($vats);
 
         $driverClass = $vats->driver;
-        $driver = new $driverClass;
+        $driver = new $driverClass($lamegats->getVats());
         if($driver instanceof IDriver){
             $lamegats->setToAts($driver->getCrmToAts());
             $lamegats->setToCrm($driver->getAtsToCrm());
