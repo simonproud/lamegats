@@ -15,6 +15,7 @@ use SimonProud\Lamegats\Exception\MethodNotFoundException;
 use SimonProud\Lamegats\Interfaces\IFromCrm;
 use SimonProud\Lamegats\Interfaces\IToCrm;
 use SimonProud\Lamegats\Interfaces\ITokenized;
+use SimonProud\Lamegats\Models\VatsSystem;
 
 class Driver extends \SimonProud\Lamegats\Drivers\Driver implements ITokenized
 {
@@ -54,9 +55,9 @@ class Driver extends \SimonProud\Lamegats\Drivers\Driver implements ITokenized
      * @throws TokenExpectedException
      * @throws URIExcectedException
      */
-    public function __construct($config)
+    public function __construct(VatsSystem $vatsSystem)
     {
-
+        $config = $vatsSystem->toArray();
         parent::__construct($config);
         if(isset($config['clean']) && $config['clean'] != true || !isset($config['clean'])){
         // Если есть в конфиге, берем оттуда, если нету, читаем из конфига
@@ -82,8 +83,9 @@ class Driver extends \SimonProud\Lamegats\Drivers\Driver implements ITokenized
         $this->setBaseUri($baseURI);
 
         $this->client = new Client($config);
-        $this->setCrmToAts(new CrmToAts($this->client, $config));
-        $this->setAtsToCrm(new AtsToCrm($this, $config));
+
+        $this->setCrmToAts(new CrmToAts($this->client, ['token' => $config['auth_token'], 'base_uri' => $baseURI]));
+        $this->setAtsToCrm(new AtsToCrm($this, VatsSystem::find($config['id'])));
         }
     }
 

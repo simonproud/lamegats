@@ -52,6 +52,8 @@ class CreateLamegatsVatsTables extends Migration
             $table->string('call_id');
             $table->string('direction');
             $table->string('type');
+
+            $table->timestamps();
             $table->foreign('vats_systems_id')
                         ->references('id')
                         ->on($tableNames['vats_systems'])
@@ -65,6 +67,9 @@ class CreateLamegatsVatsTables extends Migration
             $table->string('direction');
             $table->string('type');
             $table->string('call_id');
+
+            $table->timestamps();
+
             $table->foreign('vats_systems_id')
                            ->references('id')
                            ->on($tableNames['vats_systems'])

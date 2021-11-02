@@ -34,7 +34,7 @@ class ATSController extends \App\Http\Controllers\Controller implements \SimonPr
         $vats = VatsSystem::findByTokenAndName($tokens[0], config('vats.drivers.'.$request->driver));
         if($vats instanceof VatsSystem && $vats->driver != null && class_exists($vats->driver)){
             $driverClass =  $vats->driver;
-            $driver = new $driverClass($vats->toArray());
+            $driver = new $driverClass($vats);
         }else{
             \Illuminate\Support\Facades\Log::error('driver or vats for token and name is not exists');
             throw new \Exception('driver or vats for token and name is not exists');
