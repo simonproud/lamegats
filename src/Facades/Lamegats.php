@@ -13,6 +13,7 @@ class Lamegats
     private VatsSystem $vats;
     private IFromCrm $toAts;
     private IToCrm $toCrm;
+    private IDriver $driver;
 
     public static function make(VatsSystem $vats):self
     {
@@ -22,6 +23,7 @@ class Lamegats
         $driverClass = $vats->driver;
         $driver = new $driverClass($lamegats->getVats());
         if($driver instanceof IDriver){
+            $lamegats->setDriver($driver);
             $lamegats->setToAts($driver->getCrmToAts());
             $lamegats->setToCrm($driver->getAtsToCrm());
         }else{
@@ -81,6 +83,22 @@ class Lamegats
     public function setVats(VatsSystem $vats): void
     {
         $this->vats = $vats;
+    }
+
+    /**
+     * @return IDriver
+     */
+    public function getDriver(): IDriver
+    {
+        return $this->driver;
+    }
+
+    /**
+     * @param IDriver $driver
+     */
+    public function setDriver(IDriver $driver): void
+    {
+        $this->driver = $driver;
     }
 
 

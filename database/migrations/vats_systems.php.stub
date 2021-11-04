@@ -35,6 +35,7 @@ class CreateLamegatsVatsTables extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('vats_systems_id');
             $table->string('identifier');
+            $table->boolean('dnd');
             $table->timestamps();
 
             $table->unique(['vats_systems_id', 'identifier']);

@@ -24,5 +24,13 @@ return [
         'accounts' => 'lg_accounts',
         'events' => 'lg_events',
         'calls' => 'lg_calls',
-    ]
+    ],
+    /**
+     * DO NOT CHANGE
+     */
+    'response_keys' => [
+        'megafon' => [
+            'account.identifier' => 'name'
+        ]
+    ],
 ];

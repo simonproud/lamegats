@@ -7,6 +7,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ServerException;
 use http\Env\Request;
+use SimonProud\Lamegats\Drivers\Megafon\Maps\ResponseMap;
 use SimonProud\Lamegats\Exception\TokenExpectedException;
 use SimonProud\Lamegats\Exception\URIExcectedException;
 use SimonProud\Lamegats\Drivers\Megafon\Services\AtsToCrm;
@@ -51,7 +52,7 @@ class Driver extends \SimonProud\Lamegats\Drivers\Driver implements ITokenized
     /**
      *
      * MegafonVirtualAts constructor.
-     * @param $config
+     * @param VatsSystem $vatsSystem
      * @throws TokenExpectedException
      * @throws URIExcectedException
      */
@@ -62,7 +63,6 @@ class Driver extends \SimonProud\Lamegats\Drivers\Driver implements ITokenized
         if(isset($config['clean']) && $config['clean'] != true || !isset($config['clean'])){
         // Если есть в конфиге, берем оттуда, если нету, читаем из конфига
         $baseURI = $config['base_uri'];
-
         if (!$baseURI) {
             throw new URIExcectedException('Base uri expected.');
         }
@@ -101,6 +101,7 @@ class Driver extends \SimonProud\Lamegats\Drivers\Driver implements ITokenized
         }
         return null;
     }
+
     /**
      * @param $name
      * @param $arguments

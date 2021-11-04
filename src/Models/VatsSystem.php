@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $driver
  * @property string $token
  * @property string $auth_token
+ * @property int $id
  */
 class VatsSystem extends Model
 {

@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Log;
 use SimonProud\Lamegats\Drivers\Megafon\Contracts\ICrmToAts;
 use GuzzleHttp\Client;
 use Psr\Http\Message\ResponseInterface;
+use SimonProud\Lamegats\Drivers\Megafon\Models\Account;
 use SimonProud\Lamegats\Interfaces\IFromCrm;
 
 /**
@@ -33,7 +34,12 @@ class CrmToAts implements ICrmToAts, IFromCrm
      */
     public function accounts($params = [], $method = 'POST', $headers = [])
     {
-        return $this->client->request($method, $this->config['base_uri'], ['form_params'=> array_merge($params, ['cmd' => 'accounts'])]);
+        $response = json_decode($this->client->request($method, $this->config['base_uri'], ['form_params'=> array_merge($params, ['cmd' => 'accounts'])])->getBody(), true);
+        $accounts = collect();
+        foreach ($response as $account){
+            $accounts->push(new Account($account));
+        }
+        return $accounts;
     }
 
     /**
