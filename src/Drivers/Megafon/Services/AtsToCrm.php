@@ -7,6 +7,7 @@ use Exception;
 use http\Client\Curl\User;
 use Illuminate\Http\Request;
 use SimonProud\Lamegats\Drivers\Megafon\Contracts\IAtsToCrm;
+use SimonProud\Lamegats\Drivers\Megafon\Models\Call;
 use SimonProud\Lamegats\Interfaces\IDriver;
 use SimonProud\Lamegats\Interfaces\IToCrm;
 use SimonProud\Lamegats\Models\Account;
@@ -31,7 +32,8 @@ class AtsToCrm implements IAtsToCrm, IToCrm
      */
     public function history($body)
     {
-        // TODO: Implement history() method.
+        $call = new Call($body->all());
+
     }
 
     /**
@@ -57,7 +59,7 @@ class AtsToCrm implements IAtsToCrm, IToCrm
         }
         if($client === null){
             [$clientClass, $field, $modifier] = explode('@', config('vats.create_if_clients_not_exists'));
-            if($clientClass instanceof Model){
+            if(new $clientClass instanceof Model){
                 $client = $clientClass::create([$field => $modifier.$body['phone'], 'comment' => 'vats']);
             }
         }

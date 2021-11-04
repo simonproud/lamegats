@@ -45,7 +45,7 @@ class ATSController extends \App\Http\Controllers\Controller implements \SimonPr
             $driver->getAtsToCrm()->$command($request);
         }
         //_log(collect($request->all())->toJson(), 'megafon_api', true);
-         //Log::debug('Request from megafon', ['body request' => $request->all()]);
+         \Log::debug('Request from megafon', ['body request' => $request->all()]);
     }
 
     private function findToken(Request $request):array

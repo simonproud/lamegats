@@ -20,7 +20,6 @@ class Call
 
     public function __construct($fields)
     {
-        $this->uuid = $fields['uuid'];
         $this->type = $fields['type'] ?? null;
         $this->user = $fields['user'] ?? null;
         $this->ext = $fields['ext'] ?? null;

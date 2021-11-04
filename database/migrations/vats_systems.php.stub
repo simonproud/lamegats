@@ -51,9 +51,9 @@ class CreateLamegatsVatsTables extends Migration
 
             $table->string('call_id');
             $table->string('type');
-            $table->string('account_id');
+            $table->unsignedInteger('account_id');
             $table->string('client_type');
-            $table->string('client_id');
+            $table->unsignedInteger('client_id');
             $table->string('full_request');
             $table->timestamps();
             $table->foreign('vats_systems_id')
@@ -69,7 +69,11 @@ class CreateLamegatsVatsTables extends Migration
             $table->string('direction');
             $table->string('type');
             $table->string('call_id');
-
+            $table->string('client_type');
+            $table->unsignedInteger('client_id');
+            $table->string('record');
+            $table->string('duration');
+            $table->unsignedInteger('account_id');
             $table->timestamps();
 
             $table->foreign('vats_systems_id')
