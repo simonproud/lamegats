@@ -8,7 +8,7 @@ use SimonProud\Lamegats\Interfaces\ITokenized;
 abstract class Driver implements IDriver, ITokenized
 {
 
-    protected $availableFunctions;
+    protected array $availableFunctions;
 
     public function __construct($config)
     {

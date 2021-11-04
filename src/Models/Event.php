@@ -19,4 +19,6 @@ class Event extends Model
     {
         return config('vats.table_names.events', parent::getTable());
     }
+
+
 }

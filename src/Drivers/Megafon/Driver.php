@@ -47,7 +47,7 @@ class Driver extends \SimonProud\Lamegats\Drivers\Driver implements ITokenized
      */
     protected string $token;
 
-    public $availableFunctions;
+    public array $availableFunctions;
 
     /**
      *

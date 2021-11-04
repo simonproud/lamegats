@@ -9,6 +9,7 @@ use SimonProud\Lamegats\Facades\Lamegats;
 /**
  * @property string $driver
  * @property string $token
+ * @property int $id
  */
 class Account extends Model
 {
@@ -25,7 +26,14 @@ class Account extends Model
         $lamegate = Lamegats::make($vatsSystem);
         $accounts = [];
         $accountsResponse = $lamegate->getToAts()->accounts(['token' => $vatsSystem->auth_token]);
+        foreach ($accountsResponse as $item){
+            Account::firstOrCreate(['vats_systems_id' => $vatsSystem->id, 'identifier' => $item->getIdentifier()]);
+        }
         return $accountsResponse;
+    }
 
+    public static function findByVatsIdentifier(VatsSystem $vatsSystem, string $identifier):self
+    {
+       return Account::where([['vats_systems_id', '=', $vatsSystem->id],[ 'identifier','=', $identifier ]])->first();
     }
 }

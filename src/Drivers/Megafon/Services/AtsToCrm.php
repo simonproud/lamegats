@@ -9,10 +9,11 @@ use Illuminate\Http\Request;
 use SimonProud\Lamegats\Drivers\Megafon\Contracts\IAtsToCrm;
 use SimonProud\Lamegats\Interfaces\IDriver;
 use SimonProud\Lamegats\Interfaces\IToCrm;
+use SimonProud\Lamegats\Models\Account;
 use SimonProud\Lamegats\Models\Event;
 use SimonProud\Lamegats\Models\VatsSystem;
 use Illuminate\Database\Eloquent\Model;
-
+use \SimonProud\Lamegats\Drivers\Megafon\Models\Event as EventAts;
 class AtsToCrm implements IAtsToCrm, IToCrm
 {
 
@@ -40,6 +41,7 @@ class AtsToCrm implements IAtsToCrm, IToCrm
      */
     public function event($body)
     {
+        $event = new EventAts($body);
         $client = null;
         foreach (config('vats.clients') as $class => $row){
             [$field, $modifier] = explode('@', $row);
@@ -54,17 +56,19 @@ class AtsToCrm implements IAtsToCrm, IToCrm
             }
         }
         if($client === null){
-
             [$clientClass, $field, $modifier] = explode('@', config('vats.create_if_clients_not_exists'));
             if($clientClass instanceof Model){
-                $client = $clientClass::create([$field => $modifier.$body['phone'], 'source' => 'vats']);
+                $client = $clientClass::create([$field => $modifier.$body['phone'], 'comment' => 'vats']);
             }
         }
         $data = [
+            'type' => $event->getType(),
             'client_type' => get_class($client),
             'client_id' => $client->id,
             'vats_systems_id' => $this->vatsSystem->id,
-            'call_id' => $body['callId'],
+            'call_id' => $event->getCallid(),
+            'account_id' => Account::findByVatsIdentifier($this->vatsSystem, $event->getUser())->id,
+            'full_request' => $body
         ];
         return Event::create($data);
     }
