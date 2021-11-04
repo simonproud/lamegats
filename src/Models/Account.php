@@ -27,9 +27,9 @@ class Account extends Model
         $accounts = [];
         $accountsResponse = $lamegate->getToAts()->accounts(['token' => $vatsSystem->auth_token]);
         foreach ($accountsResponse as $item){
-            Account::firstOrCreate(['vats_systems_id' => $vatsSystem->id, 'identifier' => $item->getIdentifier()]);
+            $accounts[] = Account::firstOrCreate(['vats_systems_id' => $vatsSystem->id, 'identifier' => $item->getIdentifier()]);
         }
-        return $accountsResponse;
+        return $accounts;
     }
 
     public static function findByVatsIdentifier(VatsSystem $vatsSystem, string $identifier):self
