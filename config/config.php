@@ -30,7 +30,7 @@ return [
      */
     'response_keys' => [
         'megafon' => [
-            'account.identifier' => 'name'
+            'account' => ['identifier' => 'name']
         ]
     ],
 ];

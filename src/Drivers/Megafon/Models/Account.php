@@ -13,7 +13,7 @@ class Account
 
     public function __construct(array $fields)
     {
-        $this->identifier = $fields[config('vats.response_keys.megafon.identifier')] ?? null;
+        $this->identifier = $fields[config('vats.response_keys.megafon.account.identifier')] ?? null;
         $this->name = $fields['name'] ?? null;
         $this->realName = $fields['realName'] ?? null;
         $this->telnum = $fields['telnum'] ?? null;
