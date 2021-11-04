@@ -4,12 +4,12 @@ namespace SimonProud\Lamegats\Drivers\Megafon\Models;
 
 class Account
 {
-    private string $identifier;
-    private string $name;
-    private string $realName;
-    private string $telnum;
-    private string $email;
-    private string $ext;
+    private string|null $identifier;
+    private string|null $name;
+    private string|null $realName;
+    private string|null $telnum;
+    private string|null $email;
+    private string|null $ext;
 
     public function __construct(array $fields)
     {
