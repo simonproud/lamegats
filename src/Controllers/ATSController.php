@@ -3,8 +3,6 @@
 namespace SimonProud\Lamegats\Controllers;
 
 use Illuminate\Http\Request;
-use SimonProud\Lamegats\Drivers\Driver;
-use SimonProud\Lamegats\Events\AtsCrm;
 use Event;
 use Log;
 use SimonProud\Lamegats\Interfaces\IDriver;

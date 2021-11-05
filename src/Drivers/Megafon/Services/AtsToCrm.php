@@ -8,12 +8,15 @@ use http\Client\Curl\User;
 use Illuminate\Http\Request;
 use SimonProud\Lamegats\Drivers\Megafon\Contracts\IAtsToCrm;
 use SimonProud\Lamegats\Drivers\Megafon\Models\Call;
+use SimonProud\Lamegats\Drivers\Megafon\Models\Call as ATSCall;
 use SimonProud\Lamegats\Interfaces\IDriver;
 use SimonProud\Lamegats\Interfaces\IToCrm;
+use SimonProud\Lamegats\Interfaces\IVatsClient;
 use SimonProud\Lamegats\Models\Account;
 use SimonProud\Lamegats\Models\Event;
 use SimonProud\Lamegats\Models\VatsSystem;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 use \SimonProud\Lamegats\Drivers\Megafon\Models\Event as EventAts;
 class AtsToCrm implements IAtsToCrm, IToCrm
 {
@@ -30,10 +33,34 @@ class AtsToCrm implements IAtsToCrm, IToCrm
      * @param $body
      * @return mixed
      */
-    public function history($body)
+    public function history($body):void
     {
-        $call = new Call($body->all());
+        $call = new ATSCall($body->all());
+        foreach (config('vats.clients') as $class => $row){
+            if(new $class instanceof IVatsClient){
+                $client = $class::getByVats($call->getPhone(), $call->getUser());
+                if($client instanceof $class){
+                    break;
+                }
+            }
+            else{
+                throw new Exception('Wrong instance '.$class.'. Class must implement '.IVatsClient::class);
+            }
+        }
+        $data = [
+            'vats_systems_id' => $this->vatsSystem->id,
+            'type' => $call->getType(),
+            'account_id' => Account::findByVatsIdentifier($this->vatsSystem, $call->getUser())->id,
+            'call_id' => $call->getCallid(),
+            'client_type' => get_class($client),
+            'client_id' => $client->id,
+            'record' => $call->getLink(),
+            'duration' => $call->getDuration(),
+            'status' => $call->getStatus(),
+            'start' => $call->getStart(),
+        ];
 
+        Call::create($data);
     }
 
     /**
@@ -41,28 +68,20 @@ class AtsToCrm implements IAtsToCrm, IToCrm
      * @return mixed
      * @throws Exception
      */
-    public function event($body)
+    public function event($body):void
     {
         $event = new EventAts($body);
         $client = null;
         foreach (config('vats.clients') as $class => $row){
-            [$field, $modifier] = explode('@', $row);
-            if(new $class instanceof Model){
-                $client = $class::where($field, '=', $modifier.$body['phone'])->first();
-                if($client instanceof $class){
-                    break;
-                }
+            if(new $class instanceof IVatsClient){
+                $client = $class::getByVats($event->getPhone(), $event->getUser());
+                if($client instanceof $class){break;}
             }
             else{
-                throw new Exception('Wrong instance '.$class);
+                throw new Exception('Wrong instance '.$class.'. Class must implement '.IVatsClient::class);
             }
         }
-        if($client === null){
-            [$clientClass, $field, $modifier] = explode('@', config('vats.create_if_clients_not_exists'));
-            if(new $clientClass instanceof Model){
-                $client = $clientClass::create([$field => $modifier.$body['phone'], 'comment' => 'vats']);
-            }
-        }
+
         $data = [
             'type' => $event->getType(),
             'client_type' => get_class($client),
@@ -70,16 +89,16 @@ class AtsToCrm implements IAtsToCrm, IToCrm
             'vats_systems_id' => $this->vatsSystem->id,
             'call_id' => $event->getCallid(),
             'account_id' => Account::findByVatsIdentifier($this->vatsSystem, $event->getUser())->id,
-            'full_request' => $body
+            'full_request' => $body->all()
         ];
-        return Event::create($data);
+         Event::create($data);
     }
 
     /**
      * @param $body
      * @return mixed
      */
-    public function contact($body)
+    public function contact($body):void
     {
         // TODO: Implement contact() method.
     }

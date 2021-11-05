@@ -66,12 +66,13 @@ class CreateLamegatsVatsTables extends Migration
         Schema::create($tableNames['calls'], function (Blueprint $table) use ($tableNames) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('vats_systems_id');
-            $table->string('direction');
             $table->string('type');
             $table->string('call_id');
             $table->string('client_type');
             $table->unsignedInteger('client_id');
             $table->string('record');
+            $table->string('status');
+            $table->timestamp('start');
             $table->string('duration');
             $table->unsignedInteger('account_id');
             $table->timestamps();
