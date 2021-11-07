@@ -65,7 +65,9 @@ class AtsToCrm implements IAtsToCrm, IToCrm
             ];
 
             Call::create($data);
-        }catch (Exception $exception){}
+        }catch (Exception $exception){
+            Log::error($exception->getMessage(), $exception->getTrace());
+        }
 
     }
 
@@ -104,7 +106,7 @@ class AtsToCrm implements IAtsToCrm, IToCrm
             ];
             Event::create($data);
         }catch (Exception $exception){
-
+            Log::error($exception->getMessage(), $exception->getTrace());
         }
     }
 
