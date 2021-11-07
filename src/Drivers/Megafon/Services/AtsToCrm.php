@@ -7,12 +7,13 @@ use Exception;
 use http\Client\Curl\User;
 use Illuminate\Http\Request;
 use SimonProud\Lamegats\Drivers\Megafon\Contracts\IAtsToCrm;
-use SimonProud\Lamegats\Drivers\Megafon\Models\Call;
+
 use SimonProud\Lamegats\Drivers\Megafon\Models\Call as ATSCall;
 use SimonProud\Lamegats\Interfaces\IDriver;
 use SimonProud\Lamegats\Interfaces\IToCrm;
 use SimonProud\Lamegats\Interfaces\IVatsClient;
 use SimonProud\Lamegats\Models\Account;
+use SimonProud\Lamegats\Models\Call;
 use SimonProud\Lamegats\Models\Event;
 use SimonProud\Lamegats\Models\VatsSystem;
 use Illuminate\Database\Eloquent\Model;
