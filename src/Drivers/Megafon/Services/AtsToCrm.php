@@ -58,7 +58,7 @@ class AtsToCrm implements IAtsToCrm, IToCrm
             'record' => $call->getLink(),
             'duration' => $call->getDuration(),
             'status' => $call->getStatus(),
-            'start' => $call->getStart(),
+            'start' => Carbon::parse($call->getStart()),
         ];
 
         Call::create($data);
