@@ -89,7 +89,7 @@ class AtsToCrm implements IAtsToCrm, IToCrm
             'vats_systems_id' => $this->vatsSystem->id,
             'call_id' => $event->getCallid(),
             'account_id' => Account::findByVatsIdentifier($this->vatsSystem, $event->getUser())->id,
-            'full_request' => $body->all()
+            'full_request' => json_encode($body->all())
         ];
          Event::create($data);
     }
