@@ -70,7 +70,7 @@ class AtsToCrm implements IAtsToCrm, IToCrm
      */
     public function event($body):void
     {
-        $event = new EventAts($body);
+        $event = new EventAts($body->all());
         $client = null;
         foreach (config('vats.clients') as $class => $row){
             if(new $class instanceof IVatsClient){
