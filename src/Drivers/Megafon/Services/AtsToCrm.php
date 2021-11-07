@@ -82,7 +82,9 @@ class AtsToCrm implements IAtsToCrm, IToCrm
                 throw new Exception('Wrong instance '.$class.'. Class must implement '.IVatsClient::class);
             }
         }
-
+        $all = $body->all();
+        unset($all['driver']);
+        unset($all['crm_token']);
         $data = [
             'type' => $event->getType(),
             'client_type' => get_class($client),
@@ -90,7 +92,7 @@ class AtsToCrm implements IAtsToCrm, IToCrm
             'vats_systems_id' => $this->vatsSystem->id,
             'call_id' => $event->getCallid(),
             'account_id' => Account::findByVatsIdentifier($this->vatsSystem, $event->getUser())->id,
-            'full_request' => json_encode($body->all())
+            'full_request' => json_encode($all)
         ];
          Event::create($data);
     }
