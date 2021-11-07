@@ -36,7 +36,7 @@ class AtsToCrm implements IAtsToCrm, IToCrm
     public function history($body):void
     {
         $call = new ATSCall($body->all());
-        foreach (config('vats.clients') as $class => $row){
+        foreach (config('vats.clients') as $class){
             if(new $class instanceof IVatsClient){
                 $client = $class::getByVats($call->getPhone(), $call->getUser());
                 if($client instanceof $class){
@@ -72,7 +72,7 @@ class AtsToCrm implements IAtsToCrm, IToCrm
     {
         $event = new EventAts($body->all());
         $client = null;
-        foreach (config('vats.clients') as $class => $row){
+        foreach (config('vats.clients') as  $class){
             if(new $class instanceof IVatsClient){
                 $client = $class::getByVats($event->getPhone(), $event->getUser());
                 if($client instanceof $class){break;}
