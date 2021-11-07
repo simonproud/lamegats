@@ -70,6 +70,7 @@ class CreateLamegatsVatsTables extends Migration
             $table->string('call_id');
             $table->string('client_type');
             $table->unsignedInteger('client_id');
+            $table->string('phone');
             $table->string('record');
             $table->string('status');
             $table->timestamp('start');

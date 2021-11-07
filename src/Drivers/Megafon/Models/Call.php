@@ -4,7 +4,7 @@ namespace SimonProud\Lamegats\Drivers\Megafon\Models;
 
 class Call
 {
-    private string $uuid;
+    private string|null $uuid;
     private string|null $type;
     private string|null $user;
     private string|null $ext;
@@ -37,7 +37,7 @@ class Call
     /**
      * @return string
      */
-    public function getUuid(): string
+    public function getUuid(): string|null
     {
         return $this->uuid;
     }
@@ -53,7 +53,7 @@ class Call
     /**
      * @return string
      */
-    public function getType(): string
+    public function getType(): string|null
     {
         return $this->type;
     }
@@ -69,7 +69,7 @@ class Call
     /**
      * @return string
      */
-    public function getUser(): string
+    public function getUser(): string|null
     {
         return $this->user;
     }
@@ -85,7 +85,7 @@ class Call
     /**
      * @return string
      */
-    public function getExt(): string
+    public function getExt(): string|null
     {
         return $this->ext;
     }
@@ -101,7 +101,7 @@ class Call
     /**
      * @return string
      */
-    public function getGroupRealName(): string
+    public function getGroupRealName(): string|null
     {
         return $this->groupRealName;
     }
@@ -117,7 +117,7 @@ class Call
     /**
      * @return string
      */
-    public function getTelnum(): string
+    public function getTelnum(): string|null
     {
         return $this->telnum;
     }
@@ -133,7 +133,7 @@ class Call
     /**
      * @return string
      */
-    public function getPhone(): string
+    public function getPhone(): string|null
     {
         return $this->phone;
     }
@@ -149,7 +149,7 @@ class Call
     /**
      * @return string
      */
-    public function getDiversion(): string
+    public function getDiversion(): string|null
     {
         return $this->diversion;
     }
@@ -165,7 +165,7 @@ class Call
     /**
      * @return string
      */
-    public function getStart(): string
+    public function getStart(): string|null
     {
         return $this->start;
     }
@@ -181,7 +181,7 @@ class Call
     /**
      * @return string
      */
-    public function getDuration(): string
+    public function getDuration(): string|null
     {
         return $this->duration;
     }
@@ -197,7 +197,7 @@ class Call
     /**
      * @return string
      */
-    public function getCallid(): string
+    public function getCallid(): string|null
     {
         return $this->callid;
     }
@@ -213,7 +213,7 @@ class Call
     /**
      * @return string
      */
-    public function getLink(): string
+    public function getLink(): string|null
     {
         return $this->link;
     }
@@ -229,7 +229,7 @@ class Call
     /**
      * @return string
      */
-    public function getStatus(): string
+    public function getStatus(): string|null
     {
         return $this->status;
     }

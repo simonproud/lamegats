@@ -36,32 +36,37 @@ class AtsToCrm implements IAtsToCrm, IToCrm
      */
     public function history($body):void
     {
-        $call = new ATSCall($body->all());
-        foreach (config('vats.clients') as $class){
-            if(new $class instanceof IVatsClient){
-                $client = $class::getByVats($call->getPhone(), $call->getUser());
-                if($client instanceof $class){
-                    break;
+        try {
+            $call = new ATSCall($body->all());
+            foreach (config('vats.clients') as $class){
+                if(new $class instanceof IVatsClient){
+                    $client = $class::getByVats($call->getPhone(), $call->getUser());
+                    if($client instanceof $class){
+                        break;
+                    }
+                }
+                else{
+                    Log::error('Wrong instance '.$class.'. Class must implement '.IVatsClient::class);
+                    throw new Exception('Wrong instance '.$class.'. Class must implement '.IVatsClient::class);
                 }
             }
-            else{
-                throw new Exception('Wrong instance '.$class.'. Class must implement '.IVatsClient::class);
-            }
-        }
-        $data = [
-            'vats_systems_id' => $this->vatsSystem->id,
-            'type' => $call->getType(),
-            'account_id' => Account::findByVatsIdentifier($this->vatsSystem, $call->getUser())->id,
-            'call_id' => $call->getCallid(),
-            'client_type' => get_class($client),
-            'client_id' => $client->id,
-            'record' => $call->getLink(),
-            'duration' => $call->getDuration(),
-            'status' => $call->getStatus(),
-            'start' => Carbon::parse($call->getStart()),
-        ];
+            $data = [
+                'vats_systems_id' => $this->vatsSystem->id,
+                'type' => $call->getType(),
+                'account_id' => Account::findByVatsIdentifier($this->vatsSystem, $call->getUser())->id,
+                'call_id' => $call->getCallid(),
+                'client_type' => get_class($client),
+                'client_id' => $client->id,
+                'record' => $call->getLink(),
+                'phone' => $call->getPhone(),
+                'duration' => $call->getDuration(),
+                'status' => $call->getStatus(),
+                'start' => Carbon::parse($call->getStart()),
+            ];
 
-        Call::create($data);
+            Call::create($data);
+        }catch (Exception $exception){}
+
     }
 
     /**
@@ -71,30 +76,36 @@ class AtsToCrm implements IAtsToCrm, IToCrm
      */
     public function event($body):void
     {
-        $event = new EventAts($body->all());
-        $client = null;
-        foreach (config('vats.clients') as  $class){
-            if(new $class instanceof IVatsClient){
-                $client = $class::getByVats($event->getPhone(), $event->getUser());
-                if($client instanceof $class){break;}
+        try {
+            $event = new EventAts($body->all());
+            $client = null;
+            foreach (config('vats.clients') as  $class){
+                if(new $class instanceof IVatsClient){
+                    $client = $class::getByVats($event->getPhone(), $event->getUser());
+                    if($client instanceof $class){break;}
+                }
+                else{
+
+                    Log::error('Wrong instance '.$class.'. Class must implement '.IVatsClient::class);
+                    throw new Exception('Wrong instance '.$class.'. Class must implement '.IVatsClient::class);
+                }
             }
-            else{
-                throw new Exception('Wrong instance '.$class.'. Class must implement '.IVatsClient::class);
-            }
+            $all = $body->all();
+            unset($all['driver']);
+            unset($all['crm_token']);
+            $data = [
+                'type' => $event->getType(),
+                'client_type' => get_class($client),
+                'client_id' => $client->id,
+                'vats_systems_id' => $this->vatsSystem->id,
+                'call_id' => $event->getCallid(),
+                'account_id' => Account::findByVatsIdentifier($this->vatsSystem, $event->getUser())->id,
+                'full_request' => json_encode($all)
+            ];
+            Event::create($data);
+        }catch (Exception $exception){
+
         }
-        $all = $body->all();
-        unset($all['driver']);
-        unset($all['crm_token']);
-        $data = [
-            'type' => $event->getType(),
-            'client_type' => get_class($client),
-            'client_id' => $client->id,
-            'vats_systems_id' => $this->vatsSystem->id,
-            'call_id' => $event->getCallid(),
-            'account_id' => Account::findByVatsIdentifier($this->vatsSystem, $event->getUser())->id,
-            'full_request' => json_encode($all)
-        ];
-         Event::create($data);
     }
 
     /**
