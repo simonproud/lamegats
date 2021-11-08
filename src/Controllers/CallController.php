@@ -66,8 +66,9 @@ class CallController  extends BaseController
     /**
      * @throws \Exception
      */
-    public function makeCall(Account $account, Request $request){
+    public function makeCall($account, Request $request){
         try {
+            $account = Account::findOrFail($account);
             $pattern = "/\D/";
             $phone = preg_replace($pattern, "", $request->phone);
             $account->makeCall($phone);
