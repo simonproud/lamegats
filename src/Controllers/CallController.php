@@ -68,7 +68,7 @@ class CallController  extends BaseController
      */
     public function makeCall(Account $account, Request $request){
         try {
-            $pattern = "^\D*(?:\d\D*){10,}$";
+            $pattern = "/\D/";
             $phone = preg_replace($pattern, "", $request->phone);
             $account->makeCall($phone);
             return $this->sendResponse('request sended', 'success query');
