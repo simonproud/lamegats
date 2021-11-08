@@ -34,7 +34,7 @@ class CrmToAts implements ICrmToAts, IFromCrm
      */
     public function accounts($params = [], $method = 'POST', $headers = [])
     {
-        $response = json_decode($this->client->request($method, $this->config['base_uri'], ['form_params'=> array_merge($params, ['cmd' => 'accounts'])])->getBody(), true);
+        $response = json_decode($this->client->request($method, $this->config['base_uri'], ['form_params'=> array_merge($params, ['cmd' => 'accounts', 'token' => $this->config['auth_token']])])->getBody(), true);
         $accounts = collect();
         foreach ($response as $account){
             $accounts->push(new Account($account));
@@ -61,9 +61,9 @@ class CrmToAts implements ICrmToAts, IFromCrm
      * @param array $headers
      * @return mixed
      */
-    public function makeCall( $params = [], $method = 'POST', $headers = [])
+    public function makeCall($params = [], $method = 'POST', $headers = [])
     {
-        return $this->client->request($method, $this->config['base_uri'], ['form_params'=> array_merge($params, ['cmd' => 'makeCall'])]);
+        return $this->client->request($method, $this->config['base_uri'], ['form_params'=> array_merge($params, ['cmd' => 'makeCall', 'token' => $this->config['auth_token']])]);
     }
 
     /**

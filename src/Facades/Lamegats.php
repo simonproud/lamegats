@@ -14,11 +14,15 @@ class Lamegats
     private IFromCrm $toAts;
     private IToCrm $toCrm;
     private IDriver $driver;
+    private string $token;
+    private string $authToken;
 
     public static function make(VatsSystem $vats):self
     {
         $lamegats = new self();
         $lamegats->setVats($vats);
+        $lamegats->setToken($vats->token);
+        $lamegats->setAuthToken($vats->auth_token);
 
         $driverClass = $vats->driver;
         $driver = new $driverClass($lamegats->getVats());
@@ -99,6 +103,38 @@ class Lamegats
     public function setDriver(IDriver $driver): void
     {
         $this->driver = $driver;
+    }
+
+    /**
+     * @return string
+     */
+    public function getToken(): string
+    {
+        return $this->token;
+    }
+
+    /**
+     * @param string $token
+     */
+    public function setToken(string $token): void
+    {
+        $this->token = $token;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAuthToken(): string
+    {
+        return $this->authToken;
+    }
+
+    /**
+     * @param string $authToken
+     */
+    public function setAuthToken(string $authToken): void
+    {
+        $this->authToken = $authToken;
     }
 
 

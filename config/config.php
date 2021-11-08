@@ -7,13 +7,14 @@ return [
     */
     'timeout' => 2.0,
     'entrypoint' => '/api/ats/entrypoint',
+    'api_prefix' => '/api/lamegats',
     'drivers' => [
         'megafon' => SimonProud\Lamegats\Drivers\Megafon\Driver::class
     ],
     'clients' => [
         //Client classes User::class => 'phone field'
-        \App\Models\User::class,
-        \Modules\Lead\Entities\Lead::class
+        'user' => \App\Models\User::class,
+        'lead' => \Modules\Lead\Entities\Lead::class
     ],
     'find_token' => [
         SimonProud\Lamegats\Drivers\Megafon\Driver::class.'@_vatsFindToken',

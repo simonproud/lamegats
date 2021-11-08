@@ -3,13 +3,10 @@
 namespace SimonProud\Lamegats\Controllers;
 
 use Illuminate\Http\Request;
-use Event;
-use Log;
 use SimonProud\Lamegats\Interfaces\IDriver;
-use SimonProud\Lamegats\Interfaces\ITokenized;
 use SimonProud\Lamegats\Models\VatsSystem;
 
-class ATSController extends \App\Http\Controllers\Controller implements \SimonProud\Lamegats\Drivers\Megafon\Contracts\IAtsToCrm
+class ATSController extends \SimonProud\Lamegats\Controllers\BaseController implements \SimonProud\Lamegats\Drivers\Megafon\Contracts\IAtsToCrm
 {
 
     /**

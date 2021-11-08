@@ -66,7 +66,7 @@ class AtsToCrm implements IAtsToCrm, IToCrm
 
             Call::create($data);
         }catch (Exception $exception){
-            \Illuminate\Support\Facades\Log::error($exception->getMessage(), $exception->getTrace());
+
         }
 
     }

@@ -6,7 +6,8 @@
     "version": "1.1",
     "require": {
         "php": ">=8",
-        "guzzlehttp/guzzle": "~7.0"
+        "guzzlehttp/guzzle": "~7.0",
+        "laravel/framework": "^8.40"
     },
     "license": "MIT",
     "authors": [
