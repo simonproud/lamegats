@@ -47,7 +47,11 @@ class CallController  extends BaseController
         if(isset($request->phone)){
             $calls = $calls->where('phone', '=', $request->phone);
         }
+        $orderDirection = $request->order_direction ?? 'desc';
 
+        if(isset($request->order_by)){
+            $calls = $calls->orderBy($request->order_by, $orderDirection);
+        }
         return $this->sendResponse($calls->paginate(), 'success query');
     }
 
