@@ -29,7 +29,7 @@ class CallController  extends BaseController
             $calls = $calls->where('duration', '>=', $request->duration_from);
         }
         if(isset($request->duration_to)){
-            $calls = $calls->where('duration', '<', $request->duration_from);
+            $calls = $calls->where('duration', '<', $request->duration_to);
         }
         if(isset($request->status)){
             $calls = $calls->where('status', '=', $request->status);
