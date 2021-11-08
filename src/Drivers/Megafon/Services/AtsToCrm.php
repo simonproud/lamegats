@@ -46,7 +46,7 @@ class AtsToCrm implements IAtsToCrm, IToCrm
                     }
                 }
                 else{
-                    Log::error('Wrong instance '.$class.'. Class must implement '.IVatsClient::class);
+                    \Log::error('Wrong instance '.$class.'. Class must implement '.IVatsClient::class);
                     throw new Exception('Wrong instance '.$class.'. Class must implement '.IVatsClient::class);
                 }
             }
@@ -66,7 +66,7 @@ class AtsToCrm implements IAtsToCrm, IToCrm
 
             Call::create($data);
         }catch (Exception $exception){
-            Log::error($exception->getMessage(), $exception->getTrace());
+            \Log::error($exception->getMessage(), $exception->getTrace());
         }
 
     }
@@ -88,7 +88,7 @@ class AtsToCrm implements IAtsToCrm, IToCrm
                 }
                 else{
 
-                    Log::error('Wrong instance '.$class.'. Class must implement '.IVatsClient::class);
+                    \Log::error('Wrong instance '.$class.'. Class must implement '.IVatsClient::class);
                     throw new Exception('Wrong instance '.$class.'. Class must implement '.IVatsClient::class);
                 }
             }
@@ -106,7 +106,7 @@ class AtsToCrm implements IAtsToCrm, IToCrm
             ];
             Event::create($data);
         }catch (Exception $exception){
-            Log::error($exception->getMessage(), $exception->getTrace());
+            \Log::error($exception->getMessage(), $exception->getTrace());
         }
     }
 
