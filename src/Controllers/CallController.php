@@ -59,7 +59,8 @@ class CallController  extends BaseController
         throw new \Exception('Method not allowed from here');
     }
 
-    public function show(Call $call){
+    public function show( $call){
+        $call = Call::find($call);
         try {
             return $this->sendResponse($call, 'success query');
         }catch (\Exception $exception){
