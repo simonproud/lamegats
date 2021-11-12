@@ -25,4 +25,8 @@ class VatsSystem extends Model
     {
         return config('vats.table_names.vats_systems', parent::getTable());
     }
+
+    public function accounts(){
+        return $this->hasMany(Account::class, 'vats_systems_id', 'id');
+    }
 }
