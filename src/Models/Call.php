@@ -19,4 +19,13 @@ class Call extends Model
     {
         return config('vats.table_names.calls', parent::getTable());
     }
+
+    public function client(): \Illuminate\Database\Eloquent\Relations\MorphTo
+    {
+        return $this->morphTo(__FUNCTION__, 'client_type', 'client_id');
+    }
+
+    public static function callsByPhone(string $phone){
+        return self::where('phone', '=', $phone);
+    }
 }
