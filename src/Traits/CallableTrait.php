@@ -16,4 +16,6 @@ trait CallableTrait
     {
         return $this->calls()->latest('created_at');
     }
+
+
 }
