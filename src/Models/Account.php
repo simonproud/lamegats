@@ -43,6 +43,10 @@ class Account extends Model
         return $this->hasOne(VatsSystem::class, 'id', 'vats_systems_id');
     }
 
+    public function calls(){
+        return $this->hasMany(Call::class, 'account_id', 'id');
+    }
+
     /**
      * @throws \Exception
      */
