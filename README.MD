@@ -1,4 +1,4 @@
-Изначально взял материалы lordjohn42/megafon-virtual-ats и переписал под себя. Ничего не работает пока и не оттестировано.
+Изначально взял материалы lordjohn42/megafon-virtual-ats и переписал под себя. Работает, но не оттестировано.
 # Multiple Virtual ATS CRM Integration
 
 ```$l = Lamegats::make(VatsSystem::first());```
